@@ -1,0 +1,65 @@
+
+
+services:
+  api:
+    image: orion-api:latest
+    build:
+      context: ./api
+      target: runtime
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: development
+      PORT: "8000"
+      LOG_LEVEL: debug
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  worker:
+    image: orion-worker:latest
+    build:
+      context: ./worker
+      target: runtime
+    ports:
+      - "9091:9091"
+    environment:
+      NODE_ENV: development
+      METRICS_PORT: "9091"
+      CRON_SCHEDULE: "* * * * *"
+      TZ: UTC
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9091/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./monitoring/alerts.yaml:/etc/prometheus/alerts.yaml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+networks:
+  default:
+    name: orion-network
