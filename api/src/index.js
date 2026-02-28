@@ -62,11 +62,15 @@ app.get('/metrics', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Orion API is running', version: '1.0.0' });
+  res.json({ message: 'Agnos API is running', version: '1.0.0' });
 });
 
-app.listen(PORT, () => {
-  log('info', `API started on port ${PORT}`, { port: PORT });
-});
+// Only start server if this file is run directly
+// NOT when imported by tests
+if (require.main === module) {
+  app.listen(PORT, () => {
+    log('info', `API started on port ${PORT}`, { port: PORT });
+  });
+}
 
 module.exports = app;

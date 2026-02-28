@@ -3,8 +3,8 @@ const app = require('../src/index');
 
 let server;
 
-beforeAll(() => {
-  server = app.listen(0); 
+beforeAll((done) => {
+  server = app.listen(0, done); 
 });
 
 afterAll((done) => {
