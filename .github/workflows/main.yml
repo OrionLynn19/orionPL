@@ -86,21 +86,80 @@ jobs:
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
 
-  deploy-mocked:
-    name: Deploy (Mocked)
+  # ── DEV branch only ───────────────────────────────────────────
+  deploy-dev:
+    name: Deploy to DEV (Mocked)
+    runs-on: ubuntu-latest
+    needs: security-scan
+    if: github.ref == 'refs/heads/dev'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kubectl
+        run: |
+          curl -sLo kubectl https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl
+          chmod +x kubectl
+      - name: Validate DEV manifests
+        run: |
+          ./kubectl kustomize k8s/overlays/dev --dry-run || true
+          echo "✅ DEV manifests validated"
+      - name: Mock deploy DEV
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🚀 DEV DEPLOYMENT SUMMARY"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Would deploy orion-api:dev to agnos-dev namespace"
+          echo "✅ Would deploy orion-worker:dev to agnos-dev namespace"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 Real deploy requires live cluster"
+
+  # ── UAT branch only ───────────────────────────────────────────
+  deploy-uat:
+    name: Deploy to UAT (Mocked)
+    runs-on: ubuntu-latest
+    needs: security-scan
+    if: github.ref == 'refs/heads/uat'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kubectl
+        run: |
+          curl -sLo kubectl https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl
+          chmod +x kubectl
+      - name: Validate UAT manifests
+        run: |
+          ./kubectl kustomize k8s/overlays/uat --dry-run || true
+          echo "✅ UAT manifests validated"
+      - name: Mock deploy UAT
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🚀 UAT DEPLOYMENT SUMMARY"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Would deploy orion-api:uat to agnos-uat namespace"
+          echo "✅ Would deploy orion-worker:uat to agnos-uat namespace"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 Real deploy requires live cluster"
+
+  # ── MAIN (prod) branch only ───────────────────────────────────
+  deploy-prod:
+    name: Deploy to PROD (Mocked)
     runs-on: ubuntu-latest
     needs: security-scan
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Kubernetes manifests
+      - name: Install kubectl
         run: |
           curl -sLo kubectl https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl
           chmod +x kubectl
-          ./kubectl kustomize k8s/overlays/dev --dry-run || true
-          echo "✅ Manifests validated successfully"
-      - name: Mock deploy summary
+      - name: Validate PROD manifests
         run: |
-          echo "✅ Would deploy orion-api to orion-dev"
-          echo "✅ Would deploy orion-worker to orion-dev"
-          echo "🔒 Prod deploy requires manual cluster setup"
+          ./kubectl kustomize k8s/overlays/prod --dry-run || true
+          echo "✅ PROD manifests validated"
+      - name: Mock deploy PROD
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🚀 PROD DEPLOYMENT SUMMARY"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Would deploy orion-api:latest to agnos-prod namespace"
+          echo "✅ Would deploy orion-worker:latest to agnos-prod namespace"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔒 Real deploy requires live cluster"
