@@ -46,7 +46,7 @@ const updateTodayTimestamps = async () => {
 
   try {
     // Stubbed: replace with real DB call in production
-    // e.g. await db.query('UPDATE records SET updated_at = NOW() WHERE DATE(created_at) = ?', [today])
+   
     await new Promise((resolve) => setTimeout(resolve, 200));
 
     const updatedCount = Math.floor(Math.random() * 100);
