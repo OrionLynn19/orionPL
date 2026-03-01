@@ -32,7 +32,7 @@ spec:
               app: api
       containers:
         - name: api
-          image: agnos-api:dev
+          image: orion-api:dev
           ports:
             - containerPort: 8000
           envFrom:

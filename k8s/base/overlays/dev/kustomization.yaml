@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: agnos-dev
+namespace: orion-dev
 resources:
   - ../../base
 patches:
@@ -30,7 +30,9 @@ configMapGenerator:
       - NODE_ENV=development
       - CRON_SCHEDULE=* * * * *
 images:
-  - name: agnos-api
+  - name: orion-api
+    newName: ghcr.io/orionlynn19/orion-api
     newTag: dev
-  - name: agnos-worker
+  - name: orion-worker
+    newName: ghcr.io/orionlynn19/orion-worker
     newTag: dev
