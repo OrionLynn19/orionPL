@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  
+
 jobs:
   lint-and-test:
     name: Lint & Test
@@ -95,7 +95,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
 
-  # ── DEV branch only ───────────────────────────────────────────
+ 
   deploy-dev:
     name: Deploy to DEV (Mocked)
     runs-on: ubuntu-latest
@@ -109,7 +109,7 @@ jobs:
           chmod +x kubectl
       - name: Validate DEV manifests
         run: |
-          ./kubectl kustomize k8s/overlays/dev --dry-run || true
+          ./kubectl kustomize k8s/overlays/dev 
           echo "✅ DEV manifests validated"
       - name: Mock deploy DEV
         run: |
@@ -121,7 +121,7 @@ jobs:
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "🔒 Real deploy requires live cluster"
 
-  # ── UAT branch only ───────────────────────────────────────────
+ 
   deploy-uat:
     name: Deploy to UAT (Mocked)
     runs-on: ubuntu-latest
@@ -135,7 +135,7 @@ jobs:
           chmod +x kubectl
       - name: Validate UAT manifests
         run: |
-          ./kubectl kustomize k8s/overlays/uat --dry-run || true
+          ./kubectl kustomize k8s/overlays/uat 
           echo "✅ UAT manifests validated"
       - name: Mock deploy UAT
         run: |
@@ -147,7 +147,7 @@ jobs:
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "🔒 Real deploy requires live cluster"
 
-  # ── MAIN (prod) branch only ───────────────────────────────────
+  
   deploy-prod:
     name: Deploy to PROD (Mocked)
     runs-on: ubuntu-latest
@@ -161,7 +161,7 @@ jobs:
           chmod +x kubectl
       - name: Validate PROD manifests
         run: |
-          ./kubectl kustomize k8s/overlays/prod --dry-run || true
+          ./kubectl kustomize k8s/overlays/prod 
           echo "✅ PROD manifests validated"
       - name: Mock deploy PROD
         run: |
