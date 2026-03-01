@@ -3,17 +3,7 @@ kind: Kustomization
 namespace: orion-prod
 resources:
   - ../../base
-configMapGenerator:
-  - name: api-config
-    behavior: merge
-    literals:
-      - NODE_ENV=production
-      - LOG_LEVEL=warn
-  - name: worker-config
-    behavior: merge
-    literals:
-      - NODE_ENV=production
-      - CRON_SCHEDULE=0 0 * * *
+
 images:
   - name: orion-api
     newName: ghcr.io/orionlynn19/orion-api

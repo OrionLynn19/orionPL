@@ -18,17 +18,7 @@ patches:
     target:
       kind: HorizontalPodAutoscaler
       name: api-hpa
-configMapGenerator:
-  - name: api-config
-    behavior: merge
-    literals:
-      - NODE_ENV=development
-      - LOG_LEVEL=debug
-  - name: worker-config
-    behavior: merge
-    literals:
-      - NODE_ENV=development
-      - CRON_SCHEDULE=* * * * *
+
 images:
   - name: orion-api
     newName: ghcr.io/orionlynn19/orion-api

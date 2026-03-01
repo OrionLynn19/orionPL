@@ -11,16 +11,7 @@ patches:
     target:
       kind: Deployment
       name: api
-configMapGenerator:
-  - name: api-config
-    behavior: merge
-    literals:
-      - NODE_ENV=uat
-      - LOG_LEVEL=info
-  - name: worker-config
-    behavior: merge
-    literals:
-      - NODE_ENV=uat
+
 images:
   - name: orion-api
     newName: ghcr.io/orionlynn19/orion-api
