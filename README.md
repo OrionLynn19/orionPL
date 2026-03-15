@@ -1,4 +1,4 @@
-# Orion DevOps Assignment
+
 
 ## Architecture Overview
 ```
