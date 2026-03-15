@@ -352,10 +352,8 @@ In production EKS, the cluster would have:
 ![hpa](screenshots/api-service.png)
 
 ### Prometheus Targets
-(screenshots/prometheus-1.png)
-(screenshots/prometheus-2.png)
+![prometheus-1](screenshots/prometheus-1.png)
+![prometheus-2](screenshots/prometheus-2.png)
 
-
-
-
-(screenshots/dashboard.png)
+### Dashboard
+![dashboard](screenshots/dashboard.png)
